@@ -1,12 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <!-- <div id="nav"> -->
+      <!-- 路由跳转 -->
+      <!-- <router-link to="/">Home</router-link>  -->
+      <!-- |<router-link to="/ele">About</router-link> -->
+      <!-- <HelloWorld msg="后台数据管理系统"/> -->
+    <!-- </div> -->
+    <!-- 页面留坑  没坑路由页面就无法显示 -->
     <router-view/>
+    <!-- <h1>2222</h1> -->
   </div>
 </template>
+
+<script>
+// import HelloWorld from '@/components/HelloWorld.vue'
+export default {
+    components: {
+    // HelloWorld
+  }
+}
+</script>
+
+
 
 <style lang="less">
 #app {
