@@ -265,17 +265,17 @@ export default {
   methods: {
     djsc(){
       console.log('主图片')
-      this.iUrl = `/api/admin/product/mainimg/set?productId=${this.cId}`;
+      this.iUrl = `http://192.168.31.220:8000/mall/admin/product/mainimg/set?productId=${this.cId}`;
       console.log(this.iUrl)
     },
      djsc2(){
       console.log('商品详情图')
-      this.iUrl = `/api/admin/product/introimg/add?productId=${this.cId}`;
+      this.iUrl = `http://192.168.31.220:8000/mall/admin/product/introimg/add?productId=${this.cId}`;
       console.log(this.iUrl)
     },
      djsc3(){
       console.log('商品图片')
-      this.iUrl = `/api/admin/product/productimg/add?productId=${this.cId}`;
+      this.iUrl = `http://192.168.31.220:8000/mall/admin/product/productimg/add?productId=${this.cId}`;
       console.log(this.iUrl)
     },
     // beforeUpload(file){
@@ -298,7 +298,7 @@ export default {
       this.imgId = c.productId;
       let id = c.productId;
       this.cId = id;
-      this.$axios.post(`/api/admin/product/img/getbyid`,qs.stringify({productId:id}))
+      this.$axios.post(`/admin/product/img/getbyid`,qs.stringify({productId:id}))
                   .then(res=>{
                       let obj = [{url:res.data.mainImg}]
                       console.log(res.data);
@@ -316,7 +316,7 @@ export default {
         //          被删除的
         console.log(file.index,'handleRemove1111111', fileList);
     
-        this.$axios.post(`/api/admin/product/introimg/delete`,qs.stringify({productId:this.imgId,index:file.index}))
+        this.$axios.post(`/admin/product/introimg/delete`,qs.stringify({productId:this.imgId,index:file.index}))
                           .then(res=>{
                             fileList.forEach(res=>{
                                if(res.index > file.index){
@@ -335,7 +335,7 @@ export default {
       handleRemove2(file, fileList) {
         console.log(file,'handleRemove1111111', fileList);
            console.log('handlePreview22222222',file);
-           this.$axios.post(`/api/admin/product/productimg/delete`,qs.stringify({productId:this.imgId,index:file.index}))
+           this.$axios.post(`/admin/product/productimg/delete`,qs.stringify({productId:this.imgId,index:file.index}))
                           .then(res=>{
                             fileList.forEach(res=>{
                                if(res.index > file.index){
@@ -355,7 +355,7 @@ export default {
       console.log(this.commodity);
       this.$axios
         .post(
-          `/api/admin/product/save`,qs.stringify(this.commodity)
+          `/admin/product/save`,qs.stringify(this.commodity)
           // {
           //   // num:1,
           //   product:qs.stringify(this.edit)
@@ -400,7 +400,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post(`/api/admin/product/delete`, qs.stringify({ productId: id }))
+            .post(`/admin/product/delete`, qs.stringify({ productId: id }))
             .then(res => {
               console.log(res);
             });
@@ -431,7 +431,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post(`/api/admin/product/delete`, qs.stringify({ productId: id }))
+            .post(`/admin/product/delete`, qs.stringify({ productId: id }))
             .then(res => {
               console.log(res);
             });
@@ -472,7 +472,7 @@ export default {
       console.log(this.edit, qs);
       this.$axios
         .post(
-          `/api/admin/product/save`,
+          `/admin/product/save`,
           qs.stringify(this.edit)
           // {
           //   // num:1,
@@ -523,7 +523,7 @@ export default {
   },
 
   created() {
-    this.$axios.get(`/api/admin/product/list`).then(res => {
+    this.$axios.get(`/admin/product/list`).then(res => {
       console.log(res, "请求");
       this.tableData = res.data;
       console.log(this.tableData);
@@ -643,6 +643,6 @@ h4 {
   /* text-align: right; */
 }
 .btnL{
-  text-align: right;
+  /* text-align: right; */
 }
 </style>

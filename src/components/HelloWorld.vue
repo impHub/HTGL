@@ -282,7 +282,7 @@ export default {
     },
     // 刷新数据
     refresh(){
-      this.$axios.get(`/order/list`)
+      this.$axios.get(`admin/order/list`)
                   .then(res=>{
                     console.log(res,'刷新')
                     this.tableData = res.data;
@@ -293,7 +293,7 @@ export default {
     btn() {
       console.log(this.login, "---", this.login);
       this.$axios
-        .get(`/api/admin/login`, {
+        .get(`/admin/login`, {
           params: {
             userName: this.login.accounts,
             userPassword: this.login.password
@@ -313,7 +313,7 @@ export default {
             this.$router.push({ name: 'nav', params: { userId: '123' }})
             console.log('shuj1')
             // 请求后台数据
-            this.$axios.get(`/order/list`)
+            this.$axios.get(`admin/order/list`)
                       .then(res=>{
                         console.log(res,'请求');
                         this.tableData = res.data;

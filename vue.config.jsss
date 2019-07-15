@@ -3,9 +3,10 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'localhost:8000/mall', //对应自己的接口
+        // target: 'http://127.0.0.1:8000/mall', //对应自己的接口
+        target:'https://www.lixikeji.cn/mall',
         changeOrigin: true,
-        ws: true,
+        ws: true,    
         pathRewrite: {
           '^/api': ''
         }

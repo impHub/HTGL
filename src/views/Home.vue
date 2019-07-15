@@ -103,6 +103,7 @@ export default {
   },
   data(){
     return {
+        orderS:["已付款","已发货","已收货","已完成",],
         handData:[],
     }
   },
@@ -122,7 +123,7 @@ export default {
     },
     // 刷新数据
     refresh(){
-      this.$axios.get(`/api/admin/order/list`)
+      this.$axios.get(`/admin/order/list`)
                   .then(res=>{
                     console.log(res,'刷新')
                     this.tableData = res.data;
@@ -130,7 +131,7 @@ export default {
     },
   },
   created(){
-    this.$axios.get(`/api/admin/order/list`)
+    this.$axios.get(`/admin/order/list`)
                       .then(res=>{
                         console.log(res,'请求');
                         this.tableData = res.data;
