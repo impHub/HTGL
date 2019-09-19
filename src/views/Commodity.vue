@@ -17,58 +17,55 @@
           <div>
             <el-button class="btn" type="info" @click="refreshImg">关闭</el-button>
           </div>
-         
+
           <!--  -->
           <div class="wrap_img">
-
-          
-          <el-upload
-            class="upload-demo"
-            :action="iUrl"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="suc"
-            :file-list="fileList1"
-            list-type="picture"
-          >
-            <el-button @click="djsc" size="small" type="primary">商品主图上传</el-button>
-            <!-- <div slot="tip" class="el-upload__tip">商品主图</div> -->
-          </el-upload>
+            <el-upload
+              class="upload-demo"
+              :action="iUrl"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :on-success="suc"
+              :file-list="fileList1"
+              list-type="picture"
+            >
+              <el-button @click="djsc" size="small" type="primary">商品主图上传</el-button>
+              <!-- <div slot="tip" class="el-upload__tip">商品主图</div> -->
+            </el-upload>
           </div>
           <!--  -->
-                     <!--  -->
-           <div class="wrap_img">
-          <el-upload
-            class="upload-demo"
-            :action="iUrl"
-            :on-preview="handlePreview2"
-            :on-remove="handleRemove2"
-            :on-success="suc"
-            :file-list="fileList3"
-            list-type="picture"
-          >
-            <el-button @click="djsc3" size="small" type="primary">商品图片上传</el-button>
-            <!-- <div slot="tip" class="el-upload__tip">商品图片</div> -->
-          </el-upload>
+          <!--  -->
+          <div class="wrap_img">
+            <el-upload
+              class="upload-demo"
+              :action="iUrl"
+              :on-preview="handlePreview2"
+              :on-remove="handleRemove2"
+              :on-success="suc"
+              :file-list="fileList3"
+              list-type="picture"
+            >
+              <el-button @click="djsc3" size="small" type="primary">商品图片上传</el-button>
+              <!-- <div slot="tip" class="el-upload__tip">商品图片</div> -->
+            </el-upload>
           </div>
           <!--  -->
-           <!--  -->
-           <div class="wrap_img">
-          <el-upload
-            class="upload-demo"
-            :action="iUrl"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="suc"
-            :file-list="fileList2"
-            list-type="picture"
-          >
-            <el-button @click="djsc2" size="small" type="primary">商品详情图上传</el-button>
-            <!-- <div  slot="tip" class="el-upload__tip">商品详情图</div> -->
-          </el-upload>
+          <!--  -->
+          <div class="wrap_img">
+            <el-upload
+              class="upload-demo"
+              :action="iUrl"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :on-success="suc"
+              :file-list="fileList2"
+              list-type="picture"
+            >
+              <el-button @click="djsc2" size="small" type="primary">商品详情图上传</el-button>
+              <!-- <div  slot="tip" class="el-upload__tip">商品详情图</div> -->
+            </el-upload>
           </div>
           <!--  -->
-
         </div>
       </div>
     </div>
@@ -137,7 +134,9 @@
           <el-row type="flex" class="row-bg" justify="space-around">
             <el-col :span="12">
               <el-input v-model="edit.productId" placeholder="请输入内容" :disabled="true"></el-input>
-              <el-input v-model="edit.productName" placeholder="商品名称"></el-input>
+              <el-input v-model="edit.productNameS" placeholder="商品名称"></el-input>
+              <el-input v-model="edit.productName" placeholder="商品长名称"></el-input>
+              <el-input v-model="edit.productDescribe" placeholder="商品描述"></el-input>
               <el-input v-model="edit.productPrice" placeholder="价格"></el-input>
 
               <div class="btn">
@@ -165,6 +164,9 @@
             <el-button size="mini" @click="handleimg(scope.$index, scope.row)">图片管理</el-button>
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+             <el-button v-if="scope.row.productStatus" icon='icbtn' size="mini" type="danger" @click="handleTest(scope.$index, scope.row)">下架</el-button>
+             <el-button v-else icon='icbtn' size="mini" type="success" @click="handleTest(scope.$index, scope.row,1)">上架</el-button>
+
           </template>
         </el-table-column>
       </el-table>
@@ -184,7 +186,7 @@
 <script>
 // import { constants } from "crypto";
 import qs from "qs";
-import { constants } from 'crypto';
+import { constants } from "crypto";
 // import { constants } from "crypto";
 // import { connect } from 'http2';
 // @ is an alias to /src
@@ -197,15 +199,16 @@ export default {
   },
   data() {
     return {
-      iUrl:'',
-        cId:0,
-        zImg:1,
-        imgId:0,
-        fileList2: [],
+      keyType:true,
+      iUrl: "",
+      cId: 0,
+      zImg: 1,
+      imgId: 0,
+      fileList2: [],
       //  fileList2: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
       //              {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
-       fileList1:[],
-       fileList3:[],
+      fileList1: [],
+      fileList3: [],
       imgKey: false,
       options: [
         {
@@ -246,7 +249,9 @@ export default {
       edit: {
         productId: "",
         productName: "",
-        productPrice: ""
+        productPrice: "",
+        productNameS: "",
+        productDescribe: ""
       },
       commodity: {
         productName: "", //名称
@@ -263,20 +268,38 @@ export default {
     };
   },
   methods: {
-    djsc(){
-      console.log('主图片')
-      this.iUrl = `http://192.168.31.220:8000/mall/admin/product/mainimg/set?productId=${this.cId}`;
-      console.log(this.iUrl)
+    handleTest(index,value,num){
+      if(value.productStatus){
+            this.$axios.get(`/mall/admin/product/soldout?productId=${value.productId}`)
+                  .then(res=>{
+                    console.log(res,'下架成功')
+                    this.$router.go(0);
+                  })
+      }else{
+           this.$axios.get(`/mall/admin/product/putaway?productId=${value.productId}`)
+                  .then(res=>{
+                    console.log(res,'上架成功')
+                    this.$router.go(0);
+                  })
+      }
+  
+      // console.log(index,value)
+      // this.$router.go(0)
     },
-     djsc2(){
-      console.log('商品详情图')
-      this.iUrl = `http://192.168.31.220:8000/mall/admin/product/introimg/add?productId=${this.cId}`;
-      console.log(this.iUrl)
+    djsc() {
+      console.log("主图片");
+      this.iUrl = `https://www.lixikeji.cn/mall/admin/product/mainimg/set?productId=${this.cId}`;
+      console.log(this.iUrl);
     },
-     djsc3(){
-      console.log('商品图片')
-      this.iUrl = `http://192.168.31.220:8000/mall/admin/product/productimg/add?productId=${this.cId}`;
-      console.log(this.iUrl)
+    djsc2() {
+      console.log("商品详情图");
+      this.iUrl = `https://www.lixikeji.cn/mall/admin/product/introimg/add?productId=${this.cId}`;
+      console.log(this.iUrl);
+    },
+    djsc3() {
+      console.log("商品图片");
+      this.iUrl = `https://www.lixikeji.cn/mall/admin/product/productimg/add?productId=${this.cId}`;
+      console.log(this.iUrl);
     },
     // beforeUpload(file){
     //   console.log('上传图片')
@@ -289,73 +312,82 @@ export default {
     // return false  //屏蔽了action的默认上传
     // },
 
-    suc(){
-      console.log('上传成功')
+    suc() {
+      console.log("上传成功");
     },
-    handleimg(e,c){
-      
-      console.log('上传图片',c.productId)
+    handleimg(e, c) {
       this.imgId = c.productId;
       let id = c.productId;
       this.cId = id;
-      this.$axios.post(`/admin/product/img/getbyid`,qs.stringify({productId:id}))
-                  .then(res=>{
-                      let obj = [{url:res.data.mainImg}]
-                      console.log(res.data);
-                      this.fileList1 = obj;
-                      this.fileList2 = res.data.productIntroImg;
-                      this.fileList3 = res.data.productImg;
-                      console.log(this.fileList1,this.fileList2,this.fileList3,'22');
-                      // this.Url = "/api/admin/product/mainimg/sat?productId="+
-                  })
+      console.log("上传图片", c.productId);
+      this.$axios
+        .post(
+          `/mall/admin/product/img/getbyid`,
+          qs.stringify({ productId: id })
+        )
+        .then(res => {
+          let obj = [{ url: res.data.mainImg }];
+          console.log(res.data);
+          this.fileList1 = obj;
+          this.fileList2 = res.data.productIntroImg;
+          this.fileList3 = res.data.productImg;
+          console.log(this.fileList1, this.fileList2, this.fileList3, "22");
+          // this.Url = "/api/admin/product/mainimg/sat?productId="+
+        });
       this.imgKey = true;
-      console.log('上传图片')
+      console.log("上传图片");
     },
     // 删除图片
-      handleRemove(file, fileList) {
-        //          被删除的
-        console.log(file.index,'handleRemove1111111', fileList);
-    
-        this.$axios.post(`/admin/product/introimg/delete`,qs.stringify({productId:this.imgId,index:file.index}))
-                          .then(res=>{
-                            fileList.forEach(res=>{
-                               if(res.index > file.index){
-                                 res.index = res.index -1;
-                               }
-                            })
-                            this.fileList2 = fileList;
-                            console.log(fileList,'成功删除')
-                          })
-      },
-      handlePreview(file) {
-     
-      },
+    handleRemove(file, fileList) {
+      //          被删除的
+      console.log(file.index, "handleRemove1111111", fileList);
 
-        // 删除图片2  productImg
-      handleRemove2(file, fileList) {
-        console.log(file,'handleRemove1111111', fileList);
-           console.log('handlePreview22222222',file);
-           this.$axios.post(`/admin/product/productimg/delete`,qs.stringify({productId:this.imgId,index:file.index}))
-                          .then(res=>{
-                            fileList.forEach(res=>{
-                               if(res.index > file.index){
-                                 res.index = res.index -1;
-                               }
-                            })
-                            this.fileList2 = fileList;
-                            console.log(fileList,'成功删除')
-                          })
-        
-      },
-      handlePreview2(file) {
-        console.log('handlePreview22222222',file);
-      },
+      this.$axios
+        .post(
+          `/mall/admin/product/introimg/delete`,
+          qs.stringify({ productId: this.imgId, index: file.index })
+        )
+        .then(res => {
+          fileList.forEach(res => {
+            if (res.index > file.index) {
+              res.index = res.index - 1;
+            }
+          });
+          this.fileList2 = fileList;
+          console.log(fileList, "成功删除");
+        });
+    },
+    handlePreview(file) {},
+
+    // 删除图片2  productImg
+    handleRemove2(file, fileList) {
+      console.log(file, "handleRemove1111111", fileList);
+      console.log("handlePreview22222222", file);
+      this.$axios
+        .post(
+          `/mall/admin/product/productimg/delete`,
+          qs.stringify({ productId: this.imgId, index: file.index })
+        )
+        .then(res => {
+          fileList.forEach(res => {
+            if (res.index > file.index) {
+              res.index = res.index - 1;
+            }
+          });
+          this.fileList2 = fileList;
+          console.log(fileList, "成功删除");
+        });
+    },
+    handlePreview2(file) {
+      console.log("handlePreview22222222", file);
+    },
     //确认
     addC() {
       console.log(this.commodity);
       this.$axios
         .post(
-          `/admin/product/save`,qs.stringify(this.commodity)
+          `/mall/admin/product/save`,
+          qs.stringify(this.commodity)
           // {
           //   // num:1,
           //   product:qs.stringify(this.edit)
@@ -400,7 +432,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post(`/admin/product/delete`, qs.stringify({ productId: id }))
+            .post(`/mall/admin/product/delete`, qs.stringify({ productId: id }))
             .then(res => {
               console.log(res);
             });
@@ -431,7 +463,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post(`/admin/product/delete`, qs.stringify({ productId: id }))
+            .post(`/mall/admin/product/delete`, qs.stringify({ productId: id }))
             .then(res => {
               console.log(res);
             });
@@ -472,7 +504,7 @@ export default {
       console.log(this.edit, qs);
       this.$axios
         .post(
-          `/admin/product/save`,
+          `/mall/admin/product/save`,
           qs.stringify(this.edit)
           // {
           //   // num:1,
@@ -508,10 +540,10 @@ export default {
       console.log(e, "dangq");
     },
 
-      refreshImg(){
-    console.log('关闭')
-    this.imgKey = false;
-  },
+    refreshImg() {
+      console.log("关闭");
+      this.imgKey = false;
+    }
     // 刷新数据
     // refresh() {
     //   this.$axios.get(`/api/admin/product/list`).then(res => {
@@ -523,7 +555,7 @@ export default {
   },
 
   created() {
-    this.$axios.get(`/admin/product/list`).then(res => {
+    this.$axios.get(`/mall/admin/product/list`).then(res => {
       console.log(res, "请求");
       this.tableData = res.data;
       console.log(this.tableData);
@@ -593,11 +625,11 @@ export default {
   /* justify-content: center; */
   /* align-items: center; */
 }
-.upload-demo{
+.upload-demo {
   display: inline-block;
   width: 100%;
 }
-.wrap_img{
+.wrap_img {
   /* position: absolute;
   top: 0; */
   width: 33%;
@@ -631,18 +663,21 @@ h4 {
 .el-select {
   width: 100%;
 }
-.el-upload__tip{
+.el-upload__tip {
   text-align: center;
   font-size: 30px;
 }
 /* .el-upload{
   margin: 0 auto;
 } */
-.upload-demo{
+.upload-demo {
   /* text-align: center; */
   /* text-align: right; */
 }
-.btnL{
+.btnL {
   /* text-align: right; */
+}
+.icbtn{
+  color: blue;
 }
 </style>

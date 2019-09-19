@@ -29,7 +29,7 @@
       align="center"
       prop="productInfo"
       label="产品名称数量"
-      width="280">
+      width="120">
     </el-table-column>
 
      <!-- <el-table-column
@@ -43,7 +43,7 @@
       align="center"
       prop="price"
       label="总金额"
-      width="180">
+      width="120">
     </el-table-column>
 
      <!-- <el-table-column
@@ -56,7 +56,21 @@
      align="left"
       prop="addr"
       label="送货信息"
-      width="370">
+      width="320">
+    </el-table-column>
+
+     <el-table-column
+      align="center"
+      prop="orderlogisticcode"
+      label="快递单号"
+      width="180">
+    </el-table-column>
+
+     <el-table-column
+      align="center"
+      prop="ordershippercode"
+      label="快递公司"
+      width="120">
     </el-table-column>
 
     <el-table-column
@@ -123,7 +137,7 @@ export default {
     },
     // 刷新数据
     refresh(){
-      this.$axios.get(`/admin/order/list`)
+      this.$axios.get(`/mall/admin/order/list`)
                   .then(res=>{
                     console.log(res,'刷新')
                     this.tableData = res.data;
@@ -131,7 +145,7 @@ export default {
     },
   },
   created(){
-    this.$axios.get(`/admin/order/list`)
+    this.$axios.get(`/mall/admin/order/list`)
                       .then(res=>{
                         console.log(res,'请求');
                         this.tableData = res.data;

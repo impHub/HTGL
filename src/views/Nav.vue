@@ -9,6 +9,7 @@
     >
       <el-menu-item index="1">订单管理</el-menu-item>
       <el-menu-item index="2">商品管理</el-menu-item>
+      <el-menu-item index="3">轮播图</el-menu-item>
       <!-- <el-menu-item index="3" disabled>消息中心</el-menu-item>
       <el-menu-item index="4">
         <a href="https://www.ele.me" target="_blank">订单管理</a>
@@ -38,6 +39,8 @@ export default {
       }else if(key == 2){
           this.$router.push({name:'commodity'})
           console.log('商品管理')
+      }else if(key == 3){
+         this.$router.push({name:'about'})
       }
     }
     

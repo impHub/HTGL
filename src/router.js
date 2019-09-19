@@ -5,6 +5,7 @@ import Ele from './views/ele-sy.vue'
 import Index from './components/HelloWorld.vue'
 import Nav from './views/Nav.vue'
 import Commodity from './views/Commodity.vue'
+import About from './views/About.vue'
 //底下使用了一种模块化引入的方法
 // import About from './views/About.vue'
 
@@ -26,6 +27,7 @@ export default new Router({
         // {path:'', redirect: '/nav/home',component: Home,},
         { path: '/nav/home', name: 'home', component: Home },
         { path: '/nav/commodity', name: 'commodity', component: Commodity },
+        { path: '/nav/about', name: 'about', component: About },
         // { path: '/infoshow', name: 'infoshow', component: InfoShow },
         // { path: '/foundlist', name: 'foundlist', component: FoundList }
       ]
