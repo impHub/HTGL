@@ -10,7 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 //挂在到vue原型上方便之后的调用
 Vue.prototype.$axios = Axios;
-Axios.defaults.baseURL = 'https://www.lixikeji.cn' // 开发本地代理
+// Axios.defaults.baseURL = 'https://www.lixikeji.cn' // 开发本地代理
 // axios.defaults.headers.post['Contenst-Type'] = 'application/json;'
 // axios.defaults.headers.common['token'] = store.state.token
 // Axios.defaults.baseURL = 'localhost:8000/mall'

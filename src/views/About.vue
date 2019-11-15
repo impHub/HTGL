@@ -55,7 +55,7 @@ import qs from "qs";
       }
     },
     created(){
-        this.$axios.get(`/mall/floatimg/list`)
+        this.$axios.get(`/mall/admin/product/floatimg/list`)
                     .then(res=>{
                       // this.fileList = res.data;
                       

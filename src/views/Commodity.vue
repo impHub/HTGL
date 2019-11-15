@@ -1,12 +1,28 @@
 <template>
+    
   <!-- <div class="zc"> -->
   <div class="btnL">
-    <el-row>
-      <el-col :span="2" :offset="21">
-        <el-button class="btn" type="success" @click="refresh">添加商品</el-button>
-      </el-col>
-      <!-- <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col> -->
-    </el-row>
+    <!-- 搜索 -->
+    <div>
+        <div class="sou">
+          <div class="el-input">
+            <el-input  v-model="input" placeholder="请输入内容"></el-input>
+          </div>
+
+
+    </div>
+  <!--  -->
+  <div class="abtn">
+        <el-button @click="searchFor" type="primary">搜索</el-button>
+  </div>
+  
+
+    <div class="tBtn">
+       <el-button  type="success" @click="refresh">添加商品</el-button>
+    </div>
+
+    
+    </div>
     <!--添加图片  -->
     <div v-if="imgKey" class="zc">
       <!--  -->
@@ -14,9 +30,7 @@
       <!--  -->
       <div class="tk_3">
         <div class="wrap_2">
-          <div>
-            <el-button class="btn" type="info" @click="refreshImg">关闭</el-button>
-          </div>
+        
 
           <!--  -->
           <div class="wrap_img">
@@ -66,7 +80,12 @@
             </el-upload>
           </div>
           <!--  -->
+           <div>
+            <el-button class="btn" type="info" @click="refreshImg">关闭</el-button>
+          </div>
         </div>
+
+         
       </div>
     </div>
     <!--  -->
@@ -100,7 +119,10 @@
               <!--  -->
               <el-input v-model="commodity.productCount" placeholder="库存"></el-input>
               <el-input v-model="commodity.productDiscount" placeholder="是否打折,填1为不打折"></el-input>
-              <el-input v-model="commodity.productPromote" placeholder="是否促销,填0不促销"></el-input>
+              <el-input v-model="commodity.productPromote" placeholder="是否展示在活动专区,填0不展示"></el-input>
+              <el-input v-model="commodity.productDeduct1" placeholder="一级代理返利金额"></el-input>
+               <el-input v-model="commodity.productDeduct2" placeholder="二级代理返利金额"></el-input>
+              
 
               <!-- <el-input v-model="commodity.productStatus" placeholder="状态"></el-input>
               <el-input v-model="commodity.productIsNew" placeholder="是否为新品"></el-input>-->
@@ -120,17 +142,7 @@
         <div class="wrap">
           <h4>修改信息</h4>
 
-          <!--  -->
-          <!-- <el-upload
-                class="upload-demo"
-                action="/api/test"
-                :on-change="handleChange"
-                :file-list="fileList3"
-              >
-                <el-button size="small" type="primary">图片上传</el-button>
-               
-          </el-upload>-->
-          <!--  -->
+
           <el-row type="flex" class="row-bg" justify="space-around">
             <el-col :span="12">
               <el-input v-model="edit.productId" placeholder="请输入内容" :disabled="true"></el-input>
@@ -157,6 +169,10 @@
 
         <el-table-column prop="productName" label="商品名称" width="280"></el-table-column>
 
+          <el-table-column prop="productDeduct1" label="一级代理" width="180"></el-table-column>
+
+            <el-table-column prop="productDeduct2" label="二级代理" width="180"></el-table-column>
+
         <el-table-column prop="productPrice" label="价格" width="180"></el-table-column>
         <!-- 操作 -->
         <el-table-column align="right" label="操作">
@@ -176,7 +192,7 @@
         @current-change="handleCurrentChange"
         background
         layout="prev, pager, next"
-        :total="200"
+        :total="totalLength"
       ></el-pagination>
       <!-- <el-button type="success">成功按钮</el-button> -->
     </div>
@@ -199,6 +215,9 @@ export default {
   },
   data() {
     return {
+      // value:'',
+      input:'',
+      totalLength:0,
       keyType:true,
       iUrl: "",
       cId: 0,
@@ -263,11 +282,37 @@ export default {
         productPrice: "", //价格
         productCount: "", //库存
         productPromote: "", //促销
-        productStatus: 1 //状态
+        productStatus: 1, //状态
+        productDeduct1:'',
+        productDeduct2:'',
       }
     };
   },
   methods: {
+
+    searchFor(){
+      // for
+      console.log('搜索',this.input)
+
+      this.$axios
+        .post(
+          `/mall/admin/product/search`,
+          qs.stringify({ keyWords: this.input })
+        )
+        .then(res => {
+            console.log(res.data)
+            this.totalLength = res.data.length;
+            // this.handData = res.data;
+            this.tableData = res.data;
+            this.handleCurrentChange(1)
+            
+            console.log(this.handData)
+        });
+      
+    },
+    // input(){
+    //   console.log('input')
+    // },
     handleTest(index,value,num){
       if(value.productStatus){
             this.$axios.get(`/mall/admin/product/soldout?productId=${value.productId}`)
@@ -480,10 +525,6 @@ export default {
           });
         });
 
-      // this.$axios.post(`/api/admin/product/delete`,qs.stringify({productId:id}))
-      //   .then(res=>{
-      //     console.log(res)
-      //   })
     },
     img(e, c) {
       console.log(e, c, "文件上传");
@@ -531,6 +572,7 @@ export default {
     },
     //当前页
     handleCurrentChange(e) {
+      console.log(777)
       let val = e * 10;
       console.log(val);
       //切割数组 渲染值
@@ -544,20 +586,13 @@ export default {
       console.log("关闭");
       this.imgKey = false;
     }
-    // 刷新数据
-    // refresh() {
-    //   this.$axios.get(`/api/admin/product/list`).then(res => {
-    //     console.log(res, "刷新");
-    //     this.tableData = res.data;
-    //     this.handleCurrentChange(1);
-    //   });
-    // }
   },
 
   created() {
     this.$axios.get(`/mall/admin/product/list`).then(res => {
       console.log(res, "请求");
       this.tableData = res.data;
+      this.totalLength = res.data.length;
       console.log(this.tableData);
       this.handleCurrentChange(1);
       this.key = false;
@@ -614,7 +649,7 @@ export default {
   background-color: aliceblue;
 }
 .zc .wrap_2 {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   padding: 0px;
   height: 100%;
 }
@@ -632,16 +667,18 @@ export default {
 .wrap_img {
   /* position: absolute;
   top: 0; */
-  width: 33%;
-  display: inline-block;
-  height: 100%;
+  /* width: 33%; */
+  margin: 0 auto;
+  width: 70%;
+  /* display: inline-block; */
+  /* height: 100%; */
 }
 h4 {
   color: rgb(51, 167, 155);
 }
 .btn {
-  display: flex;
-  justify-content: space-around;
+  /* display: flex;
+  justify-content: space-around; */
 }
 .upload-demo {
   margin: 10px auto;
@@ -679,5 +716,26 @@ h4 {
 }
 .icbtn{
   color: blue;
+}
+.sou{
+  display: inline-block;
+  width: 30%;
+  margin: 10px auto;
+  margin-bottom: 0;
+}
+.el-button--success{
+  margin-left: 0;
+}
+.tBtn{
+  display: inline-block;
+    margin-top: 10px;
+    float: right;
+}
+/* .el-input{
+  display: inline-block;
+} */
+.abtn{
+  display: inline-block;
+  margin-left: 10px;
 }
 </style>

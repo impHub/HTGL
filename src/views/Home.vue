@@ -39,12 +39,7 @@
       width="140">
     </el-table-column> -->
 
-     <el-table-column
-      align="center"
-      prop="price"
-      label="总金额"
-      width="120">
-    </el-table-column>
+   
 
      <!-- <el-table-column
       prop="phone"
@@ -59,6 +54,22 @@
       width="320">
     </el-table-column>
 
+
+      <el-table-column
+      align="center"
+      prop="price"
+      label="使用金豆"
+      width="120">
+    </el-table-column>
+
+    
+     <el-table-column
+      align="center"
+      prop="orderActualPrice"
+      label="实付金额"
+      width="120">
+    </el-table-column>
+
      <el-table-column
       align="center"
       prop="orderlogisticcode"
@@ -70,7 +81,7 @@
       align="center"
       prop="ordershippercode"
       label="快递公司"
-      width="120">
+      >
     </el-table-column>
 
     <el-table-column
@@ -99,7 +110,7 @@
       @current-change="handleCurrentChange"
   background
   layout="prev, pager, next"
-  :total="200">
+  :total="total">
 </el-pagination>
       <!-- <el-button type="success">成功按钮</el-button> -->
   </div>
@@ -119,6 +130,7 @@ export default {
     return {
         orderS:["已付款","已发货","已收货","已完成",],
         handData:[],
+        total:0,
     }
   },
   methods:{
@@ -149,7 +161,13 @@ export default {
                       .then(res=>{
                         console.log(res,'请求');
                         this.tableData = res.data;
+                        this.tableData.forEach(ele => {
+                            console.log(ele)
+                            // 得出使用金豆数量
+                            ele.price = ele.price - ele.orderActualPrice
+                        });
                         console.log(res.data);
+                        this.total = res.data.length
                         this.handleCurrentChange(1);
                         this.key = false;
                       })

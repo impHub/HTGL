@@ -6,6 +6,7 @@ import Index from './components/HelloWorld.vue'
 import Nav from './views/Nav.vue'
 import Commodity from './views/Commodity.vue'
 import About from './views/About.vue'
+import Class from './views/Class.vue'
 //底下使用了一种模块化引入的方法
 // import About from './views/About.vue'
 
@@ -28,7 +29,7 @@ export default new Router({
         { path: '/nav/home', name: 'home', component: Home },
         { path: '/nav/commodity', name: 'commodity', component: Commodity },
         { path: '/nav/about', name: 'about', component: About },
-        // { path: '/infoshow', name: 'infoshow', component: InfoShow },
+        { path: '/nav/class', name: 'class', component: Class },
         // { path: '/foundlist', name: 'foundlist', component: FoundList }
       ]
     },
